@@ -1,0 +1,25 @@
+# Se ejecute automáticamente todos los días a las 09:00 (hora UTC).
+
+# Tenga dos pasos dentro de un job llamado daily_job:
+
+# Paso 1: Imprima el mensaje "Buenos días ☀️ hoy es $(date)".
+
+# Paso 2: Solo los domingos (0 en cron), imprima "Hoy es domingo, toca descanso 🛌".
+on:
+  workflow_dispatch: 
+  schedule:
+    - cron: '0 9 * * *'
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener día de la semana
+        id: day
+        run: echo "day=$(date +%a)" >> GITHUB_OUTPUT
+
+      - name: Se ejecuta solo el domingo
+        if: steps.day.outputs.day == 'Sun'
+        run: echo "Hoy es domingo, toca descanso 🛌"
+      
+      - name: Siempre se Ejecuta
+        run: echo "Buenos dias hoy es $(date)"
