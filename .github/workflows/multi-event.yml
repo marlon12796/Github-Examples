@@ -1,0 +1,19 @@
+# .github/workflows/multi-event-example.yml
+name: Multi Event Example
+
+on: 
+    push: 
+        branches: 
+            - 'main'
+    pull_request: 
+        types: ['opened','reopened','synchronize']
+    workflow_dispatch: 
+jobs:
+    say-hello:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v5
+            
+            - name: Say Hello
+              run: echo "Hello! This workflow was triggered by ${{ github.event_name }}"
