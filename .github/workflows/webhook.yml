@@ -1,0 +1,20 @@
+name: Repository Dispatch Example
+on: 
+    repository_dispatch: 
+        types: [deploy-staging, deploy-prod, run-tests]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v5
+            - name: Deploy Staging 
+              if: github.event.action == 'deploy-staging'
+              run: echo "Deploy en STAGING iniciado por ${{github.event.client_payload.user}}"
+            - name: Deploy a Producción
+              if: github.event.action == 'deploy-prod'
+              run: echo "Deploy en PRODUCCIÓN iniciado por ${{ github.event.client_payload.user }}"
+            - name: Correr pruebas
+              if: github.event.action == 'run-tests'
+              run: echo "Ejecutando pruebas unitarias..."
