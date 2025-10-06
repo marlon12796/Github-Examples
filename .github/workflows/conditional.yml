@@ -1,0 +1,23 @@
+#2️⃣ Ejecutar un paso solo si un archivo cambió
+name: Conditional
+on: 
+    push: 
+        branches: [main]
+jobs:
+    check-changes:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+            - name: Ejecutar solo si README.md cambió
+              id: changes
+              run: |
+               git fetch orgin main 
+               if git diff --name-only HEAD~1 | grep -q "Readme.md" ; then
+                  echo "readme_changed=true" >> GITHUB_OUTPUT
+               else 
+                  echo "readme_changed=false" >> $GITHUB_OUTPUT
+                fi
+            - name: Ejecutar solo si README.md cambió
+              if: steps.changes.outputs.readme_changed == 'true'
+              run: echo "README.md fue modificado, ejecutando tareas específicas..."
