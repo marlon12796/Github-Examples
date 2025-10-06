@@ -23,6 +23,6 @@ jobs:
                 echo "print('✅ Archivo result.txt generado con éxito.')" >> task.py
             - name: Run Python script
               run : |
-                pyhon3  task.py
+                python3  task.py
             - name: Show generated file
               run : cat result.txt
