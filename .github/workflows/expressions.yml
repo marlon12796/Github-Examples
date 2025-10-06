@@ -34,3 +34,6 @@ jobs:
       - name: The job has succeeded
         if: ${{ success() }}
         run: echo "🎉 El job ha finalizado correctamente."
+      - name: The job has succeeded
+        if: ${{ failure()}}
+        run: echo "🎉 El job ha errado fallando."
