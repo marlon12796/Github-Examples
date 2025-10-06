@@ -1,4 +1,4 @@
-name: Repository Dispatch Example
+name: Webhook-Example
 on: 
     repository_dispatch: 
         types: [deploy-staging, deploy-prod, run-tests]
