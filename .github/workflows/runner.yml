@@ -1,0 +1,28 @@
+# Guarda ese archivo como artefacto.
+name: Python Runner Example
+on: 
+    workflow_dispatch: 
+jobs:
+    run-python-task:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v5
+            - name: Set up Python
+              uses: actions/setup-python@v6
+              with:
+                python-version: '3.13' 
+            - name: Create Python script
+              run: |
+                echo "print('🔹 Ejecutando tarea Python en runner Ubuntu...')" > task.py
+                echo "numbers = [2, 4, 6, 8, 10]" >> task.py
+                echo "squares = [n**2 for n in numbers ]" >> task.py
+                echo "with open('result.txt', 'w') as f:" >> task.py
+                echo "    f.write('Resultados del cálculo:\\n')" >> task.py
+                echo "    f.write(str(squares))" >> task.py
+                echo "print('✅ Archivo result.txt generado con éxito.')" >> task.py
+            - name: Run Python script
+              run : |
+                pyhon3  task.py
+            - name: Show generated file
+              run : cat result.txt
