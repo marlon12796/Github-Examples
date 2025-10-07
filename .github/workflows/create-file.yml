@@ -1,0 +1,34 @@
+name: Example of Workflow File
+on: 
+    workflow_dispatch: 
+jobs:
+    create-file-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Github
+              uses: actions/checkout@v5
+            - name: Set Up Node
+              uses: actions/setup-node@v5
+              with:
+                node-version: 24.5.0
+            # Step 2: Create a simple JavaScript file
+            - name: Create JS file
+              run: |
+                echo "::notice::Creating a simple Node.js script..."
+                echo "console.log('Hello from GitHub Actions!');" > app.js
+                echo "::notice::File app.js created."
+            # Step 3: Run the script with Node.js
+            -  name: Run JS file
+               run: |
+                echo "::group::Running Node.js script"
+                node app.js
+                echo "::endgroup::"
+            # Step 4: Output a result variable
+            -  name: Output Result Variable
+               id: Output   
+               run: echo "file_created=app.js ">> $GITHUB_OUTPUT
+            # Step 5: Show output result
+            # Demonstrates reading from step output
+            -  name: Show output result
+               run: | 
+                echo "The file created was: ${{ steps.output.outputs.file_created }}"
