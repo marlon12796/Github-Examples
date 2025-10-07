@@ -1,0 +1,25 @@
+name: Runner Nodejs
+on:
+    workflow_dispatch: 
+jobs:
+    run-node-task:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v5
+            - name: Set up Node.js
+              uses: actions/setup-node@v5
+              with:
+                node-version: 22.20.0
+            - name: Create Node.js script
+              run: |
+                echo "console.log('🔹 Ejecutando tarea Node.js en runner Ubuntu...');" > task.js
+                echo "const numbers = [2, 4, 6, 8, 10];" >> task.js
+                echo "const squares = numbers.map(n => n * n);" >> task.js
+                echo "const fs = require('fs');" >> task.js
+                echo "fs.writeFileSync('result.txt', 'Resultados del cálculo:\\n' + squares.join(', '));" >> task.js
+                echo "console.log('✅ Archivo result.txt generado con éxito.');" >> task.js
+            - name: Run Node script
+              run: node task.js
+            - name: Show Generated File
+              run: cat result.txt
