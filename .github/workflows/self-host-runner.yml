@@ -1,0 +1,22 @@
+name: Self-Hosted Runner Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-local:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Mostrar info del sistema
+        run: |
+          echo "🖥️ Ejecutando en un runner self-hosted"
+          uname -a
+          whoami
+
+      - name: Ejecutar tarea Node.js
+        run: |
+          echo "console.log('👋 Hola desde tu runner local!');" > test.js
+          node test.js
