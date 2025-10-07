@@ -3,6 +3,9 @@ on:
     workflow_dispatch: 
 jobs:
     create-file-job:
+        env:  # 🌿 Custom environment variables (available in all steps)
+            GREETING: "Hello from custom env"
+            NODE_ENV: "development"
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Github
@@ -11,24 +14,52 @@ jobs:
               uses: actions/setup-node@v5
               with:
                 node-version: 24.5.0
-            # Step 2: Create a simple JavaScript file
             - name: Create JS file
               run: |
                 echo "::notice::Creating a simple Node.js script..."
                 echo "console.log('Hello from GitHub Actions!');" > app.js
                 echo "::notice::File app.js created."
-            # Step 3: Run the script with Node.js
             -  name: Run JS file
                run: |
                 echo "::group::Running Node.js script"
                 node app.js
-                echo "::endgroup::"
-            # Step 4: Output a result variable
-            -  name: Output Result Variable
-               id: Output   
-               run: echo "file_created=app.js ">> $GITHUB_OUTPUT
-            # Step 5: Show output result
-            # Demonstrates reading from step output
-            -  name: Show output result
-               run: | 
-                echo "The file created was: ${{ steps.output.outputs.file_created }}"
+                echo "::endgroup::" 
+             # Step 5: Create multiple output variables
+            - name: Multiple Output Variables
+              id: Output
+              run: |
+                echo "file_created=app.js" >> $GITHUB_OUTPUT
+                echo "run_status= success" >> $GITHUB_OUTPUT
+                echo "timestamp=$(date)" >> $GITHUB_OUTPUT
+             # Step 6: Show output results
+            - name: Show output result
+              run: |
+                echo "📂 File created: ${{ steps.Output.outputs.file_created }}"
+                echo "✅ Status: ${{ steps.Output.outputs.run_status }}"
+                echo "🕒 Timestamp: ${{ steps.Output.outputs.timestamp }}"
+            # Step 7: Show GitHub built-in context variables
+            - name: Show GitHub Context Info
+              run: |
+                echo "Repository: ${{ github.repository }}"
+                echo "Actor: ${{ github.actor }}"
+                echo "Branch Ref: ${{ github.ref }}"
+                echo "Event: ${{ github.event_name }}"
+                echo "Workflow: ${{ github.workflow }}"
+                echo "Run Number: ${{ github.run_number }}"
+                echo "Commit SHA: ${{ github.sha }}"
+              # Step 8: Show default environment variables
+            - name: Show Environment Variables
+              run: |
+                echo "Workspace: $GITHUB_WORKSPACE"
+                echo "Job: $GITHUB_JOB"
+                echo "Ref: $GITHUB_REF"
+                echo "Run ID: $GITHUB_RUN_ID"
+                echo "Node Environment: $NODE_ENV"
+                echo "Greeting: $GREETING"
+              # ✅ Step 9: Mask a variable
+            -  name: Mask Sensitive Info
+               run: |
+                 echo "::notice::Demonstrating variable masking"
+                 echo "::add-mask::$GREETING"
+                 echo "Printing masked variable:"
+                 echo "API GREETING = $GREETING"   # It will appear as ***
