@@ -1,0 +1,38 @@
+name: Example Artifact Workflow
+on:
+  workflow_dispatch:
+jobs:
+    artifact-producer:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v5
+            - name: Create Simple Artifact
+              run: |
+                echo "Hello World From Artifact Producer" > message.txt
+                mkdir -p build
+                echo "Build File Content" > build/output.txt
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: My Artifact
+                path: |
+                    message.txt
+                    build/output.txt
+    artifact-consumer:
+        needs: artifact-producer
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download Artifact
+              uses: actions/download-artifact@v5
+              with:
+                name: My Artifact
+                path: downloaded-artifact
+            - name: Show artifact content
+              run: |
+                echo "Listing downloaded files:"
+                ls -R downloaded-artifact
+                echo "Content of Message Text:"
+                cat downloaded-artifact/message.txt
+                echo "Content of output.txt:"
+                cat downloaded-artifact/build/output.txt
