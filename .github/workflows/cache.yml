@@ -1,0 +1,32 @@
+name: Caching
+on:
+  workflow_dispatch:
+
+jobs: 
+  actions-cache:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Restore Cache
+          id: cache-restore
+          uses: actions/cache/restore@v4
+          with:
+            path: demo-cache
+            key: demo-cache-v1
+        - name: Populate cache directory
+          if: steps.cache-restore.outputs.cache-hit != 'true'
+          run: |
+            echo "Cache miss – generating contents"
+            mkdir -p demo-cache
+            date > demo-cache/timestamp.txt
+        - name: Save Cache
+          if: steps.cache-restore.outputs.cache-hit != 'true'
+          uses: actions/cache/save@v4
+          with:
+            path: demo-cache
+            key: ${{ steps.cache-restore.outputs.cache-primary-key }}
+        - name: Verify cache status
+          run: |
+            echo "cache-hit? -> ${{ steps.cache-restore.outputs.cache-hit }}"
+            cat demo-cache/timestamp.txt
