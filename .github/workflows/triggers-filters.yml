@@ -1,0 +1,19 @@
+name: Triggering Events
+on: 
+    push: 
+        branches: [example-branch/*]
+    pull_request: 
+        types: [reopened,synchronize,opened]
+        paths: 
+            - "03-core-features/filters/*.md"
+            - "!03-core-features/filters/*txt" 
+jobs:
+    echo-event:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Dump Full Event JSON!
+              run: |
+                echo "=== $GITHUB_EVENT_NAME payload ==="
+                cat  $GITHUB_EVENT_PATH
+
+    
