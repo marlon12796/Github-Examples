@@ -5,7 +5,7 @@ on:
             foo:
                 required: true
                 type: string
-            enviroment: 
+            environment: 
                 description: "Target GitHub environment name (e.g. staging, production)"
                 type: string
                 required: true
@@ -14,7 +14,7 @@ on:
                 required: true
 jobs:
     reusable-workflow-job:
-        environment: ${{ inputs.enviroment }}
+        environment: ${{ inputs.environment }}
         runs-on: ubuntu-latest
         steps:
             - name: job in reusable workflow
