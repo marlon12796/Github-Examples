@@ -5,7 +5,7 @@ on:
 jobs:
     call-reuseable-workflow-path:
         name: Invoke reuseable workflow with relative path
-        uses: ./.github/workflows/02-reuseable-workflows-caller.yaml
+        uses: ./.github/workflows/01-reuseable-workflows-source.yaml
         with:
             foo: bar
             environment: staging
