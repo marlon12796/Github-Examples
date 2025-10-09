@@ -10,3 +10,10 @@ jobs:
         - name: Ejecutar  accion hello world
           id: composite-action-instance
           uses: ./actions/base-composite-action.yml
+          with:
+            who-to-greet: "Marlon"
+        - name: Random Number
+          env:
+            RANDOM_NUMBER: ${{ steps.hello.outputs.random-number }}
+          run: |
+            echo "Random generado: $RANDOM_NUMBER"
