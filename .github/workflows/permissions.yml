@@ -1,0 +1,44 @@
+name: Example - GitHub Token Permissions
+on:
+  workflow_dispatch:
+
+##############################
+# 👁️ Global Permissions (opcionales)
+##############################
+# Estos permisos se aplican a todos los jobs,
+# a menos que se sobrescriban dentro de un job.
+permissions:
+  contents: read
+jobs:
+  # 🧱 Job 1: solo lectura
+  read-only-job:
+    runs-on: ubuntu-latest
+    permissions: 
+      pull-requests: read
+      contents: read
+    steps:
+      - name: Intentar editar título de PR
+        run: gh pr edit 1 --title "Nuevo Titulo desde Read Only "
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Confirmar Fallo
+        if: failure()
+        run: echo "❌ No se pudo editar el PR (permiso insuficiente)."
+  # ✅ Job con permiso de escritura (funcionará)
+  write-pr:
+    runs-on: ubuntu-latest
+    permissions: 
+      pull-requests: write
+      contents: read
+    steps:
+      - name: Editar título de PR
+        run: gh pr edit 1 --title "Nuevo título desde write-permission ✅"
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Agregar comentario al PR
+        run: gh pr comment 1 --body "💬 Comentario agregado automáticamente con permiso *write*."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Confirmar exito
+        if: success()
+        run: echo "✅ El título y comentario fueron actualizados correctamente."
