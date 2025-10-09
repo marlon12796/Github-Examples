@@ -9,7 +9,7 @@ jobs:
         - uses: actions/checkout@v4
         - name: Ejecutar  accion hello world
           id: composite-action-instance
-          uses: ./actions/base-composite-action.yml
+          uses: ./actions/base-composition-action
           with:
             who-to-greet: "Marlon"
         - name: Random Number
