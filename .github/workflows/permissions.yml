@@ -17,6 +17,7 @@ jobs:
       pull-requests: read
       contents: read
     steps:
+      - uses: actions/checkout@v4 
       - name: Intentar editar título de PR
         run: gh pr edit 1 --title "Nuevo Titulo desde Read Only "
         env: 
@@ -31,6 +32,7 @@ jobs:
       pull-requests: write
       contents: read
     steps:
+      - uses: actions/checkout@v4 
       - name: Editar título de PR
         run: gh pr edit 1 --title "Nuevo título desde write-permission ✅"
         env: 
