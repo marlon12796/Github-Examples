@@ -1,0 +1,14 @@
+name: Reuseable Workflow Caller
+
+on:
+  workflow_dispatch:
+jobs:
+    call-reuseable-workflow-path:
+        name: Invoke reuseable workflow with relative path
+        uses: ./github/workflows/02-reuseable-workflows-caller.yaml
+        with:
+            foo: bar
+            environment: staging
+        secrets: 
+            inherit
+    
